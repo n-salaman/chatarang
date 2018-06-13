@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 
-import Chat from './Chat'
 import Sidebar from './Sidebar'
+import Chat from './Chat'
 
 class Main extends Component {
   render() {
     return (
-      <div className = "Main" style={styles}>
-        <Sidebar user={this.props.user} />
+      <div className="Main" style={styles}>
+        <Sidebar
+          user={this.props.user}
+          signOut={this.props.signOut}
+        />
         <Chat user={this.props.user} />
       </div>
     )
@@ -16,7 +19,7 @@ class Main extends Component {
 
 const styles = {
   display: 'flex',
-  alignItems: 'strech',
+  alignItems: 'stretch',
   height: '100vh',
 }
 

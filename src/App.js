@@ -7,7 +7,9 @@ import Main from './Main'
 
 class App extends Component {
   state = {
-    user: {},
+    user: {
+      displayName: ''
+    },
   }
 
   componentDidMount() {

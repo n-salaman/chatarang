@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Route, Switch, Redirect } from 'react-router-dom'
 
 import './App.css'
 import { auth } from './base'
@@ -6,18 +7,16 @@ import SignIn from './SignIn'
 import Main from './Main'
 
 class App extends Component {
-  state = {
-    user: {
-      displayName: ''
-    },
+  constructor() {
+    super()
+
+    const user = JSON.parse(localStorage.getItem('user')) || {}
+    this.state = {
+      user
+    }
   }
 
   componentDidMount() {
-    const user = JSON.parse(localStorage.getItem('user'))
-    if (user) {
-      this.setState({ user })
-    }
-
     auth.onAuthStateChanged(
       user => {
         if (user) {
@@ -58,11 +57,35 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {
-          this.signedIn()
-            ? <Main user={this.state.user} signOut={this.signOut} />
-            : <SignIn />
-        }
+        <Switch>
+          <Route
+            path="/sign-in"
+            render={() => (
+              this.signedIn()
+                ? <Redirect to="/rooms/general" />
+                : <SignIn />
+            )}
+          />
+          <Route
+            path="/rooms/:roomName"
+            render={navProps => (
+              this.signedIn()
+                ? <Main
+                    user={this.state.user}
+                    signOut={this.signOut}
+                    {...navProps}
+                  />
+                : <Redirect to="/sign-in" />
+            )}
+          />
+          <Route
+            render={() => (
+              this.signedIn()
+                ? <Redirect to="/rooms/general" />
+                : <Redirect to="/sign-in" />
+            )}
+          />
+        </Switch>
       </div>
     )
   }

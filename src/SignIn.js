@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, css } from 'aphrodite'
 
-import { auth, googleProvider, gitProvider } from './base'
+import { auth, googleProvider, githubProvider } from './base'
 
 class SignIn extends Component {
   state = {
@@ -12,17 +12,8 @@ class SignIn extends Component {
     this.setState({ email: ev.target.value })
   }
 
-  handleSubmit = (ev) => {
-    ev.preventDefault()
-    // do something?
-  }
-
-  authenticate = () => {
-    auth.signInWithPopup(googleProvider)
-  }
-
-  gitAuthenticate = () => {
-    auth.signInWithPopup(gitProvider)
+  authenticate = (provider) => {
+    auth.signInWithPopup(provider)
   }
 
   render() {
@@ -37,29 +28,13 @@ class SignIn extends Component {
         <main className={css(styles.main)}>
           <form
             className={css(styles.form)}
-            onSubmit={this.handleSubmit}
           >
             <h1>Welcome!</h1>
-            {/* <label htmlFor="email" className={css(styles.label)}>
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              className={css(styles.input)}
-              onChange={this.handleChange}
-              autoFocus
-            />
-            <button type="submit" className={css(styles.button)}>
-              Sign In
-            </button>
-
-            or */}
 
             <button
               type="button"
               className={css(styles.button)}
-              onClick={this.authenticate}
+              onClick={() => this.authenticate(googleProvider)}
             >
               <i className={`fab fa-google ${css(styles.brandIcon)}`}></i>
               Sign in with Google
@@ -67,13 +42,12 @@ class SignIn extends Component {
 
             <button
               type="button"
-              className={css(styles.button)}
-              onClick={this.gitAuthenticate}
+              className={css(styles.button, styles.github)}
+              onClick={() => this.authenticate(githubProvider)}
             >
-              <i className={`fab fa-github-square ${css(styles.brandIcon)}`}></i>
+              <i className={`fab fa-github ${css(styles.brandIcon)}`}></i>
               Sign in with GitHub
             </button>
-
           </form>
 
           <div className="blurb">
@@ -157,13 +131,18 @@ const styles = StyleSheet.create({
 
   button: {
     display: 'block',
-    margin: '0 auto',
+    margin: '0 auto 1rem',
     padding: '1rem 2rem',
     fontSize: '1.2rem',
     borderRadius: '1rem',
     backgroundColor: '#ff3333',
     color: 'white',
     width: '20rem',
+  },
+
+  github: {
+    marginBottom: 0,
+    backgroundColor: '#6e5494',
   },
 
   brandIcon: {

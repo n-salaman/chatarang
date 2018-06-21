@@ -31,7 +31,7 @@ class MessageList extends Component {
 
         {
           messages.map(msg => (
-            <Message key={msg.id} message={msg} />
+            <Message key={msg.id} message={msg} addReaction={this.props.addReaction} />
           ))
         }
         <div ref={el => this.messagesEnd = el}></div>
@@ -49,7 +49,7 @@ const styles = {
   },
 
   announcement: {
-    padding: '2rem 1rem',
+    padding: '2rem 1rem 10rem',
   },
 
   h3: {
